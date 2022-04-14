@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs,... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -14,17 +14,21 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "21.05";
+  home.stateVersion = "21.11";
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
 imports = [
-
+#./i3.nix
+./sxhkd.nix
+#./bspwm.nix
 ];
 
 home.packages = with pkgs; [
    #alacritty 
+   polkit
+   picom
    kitty
    neofetch
    pipewire
@@ -44,7 +48,9 @@ home.packages = with pkgs; [
    obs-studio
    gnome.nautilus
    dmenu
+    mpv
 #   inputs.nix-gaming.packages.x86_64-linux.osu-stable
+    ntfs3g
     nordic
     lxappearance
     polybar
@@ -60,9 +66,46 @@ home.packages = with pkgs; [
    legendary-gl
    git-crypt
    gnupg
-   nano
+   lutris
+   winetricks
+   eww 
+   rofi 
+   feh 
+   killall
+   scrot 
+   playerctl 
+   gamemode 
+   pfetch 
+   heroic
+   librewolf 
+   networkmanagerapplet 
+   fish 
+   spotify 
+   betterdiscordctl
+   htop
+   river
+#python310Packages.bootstrapped-pip
+python39Packages.fake_factory
+python39Packages.factory_boy
+alacritty
+doas
+gcc
+gnumake
+gcc-unwrapped
+binutils
+cmake
+wayland
+xwayland
+#firefox
+gnome.gnome-disk-utility
+virt-manager
+#polkit_gnome
+gnome3.gnome-tweaks
+teams
+swtpm
+sfml
+csfml
 ];
-
 
 nixpkgs = {
   config = {
@@ -70,21 +113,32 @@ nixpkgs = {
   };
 };
 
-
-programs.gpg = { 
- enable = true;
-};
-
-services.gpg-agent = {
- enable = true;
- pinentryFlavor = "qt";
-};
-
 programs.neovim = { 
 enable = true;
-vimAlias = false;
-plugins = [
-      pkgs.vimPlugins.vim-nix
+vimAlias = true;
+viAlias = true;
+extraConfig = ''
+ set mouse=a
+colorscheme nord
+let g:airline_theme='base16'
+set number
+  set linespace=2
+ set softtabstop=2 
+ set linespace=2
+ set expandtab
+    '';
+    
+plugins = with pkgs.vimPlugins; [
+nvim-web-devicons  
+vim-nix
+vim-airline
+gruvbox
+nord-nvim
+vim-fish
+nerdtree
+vim-airline-themes
+vim-plug
+tabnine-vim
  ];
 };
 
@@ -94,16 +148,17 @@ home.file = {
     include ./nord.conf
 
 # font_family      Input Mono 
-font_family      Fantasque Sans Mono 
+font_family      Sarasa Mono CL Nerd Font
 italic_font      auto 
 bold_font        auto 
 bold_italic_font auto 
 
 # Font size (in pts) 
-font_size        18.0 
+font_size        14.0 
+     
+window_padding_width 25
+window_padding_height 25
 
-
-    '';
-
-  };
+ '';
+ };
 }
